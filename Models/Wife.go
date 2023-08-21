@@ -7,7 +7,7 @@ type Wife struct {
 	Human Human
 }
 
-func (w Wife) eat(wife *Wife, points int16) {
+func (w Wife) eat(wife *Wife, points uint16) {
 	wife.Human.Satiety += points
 }
 
