@@ -1,7 +1,7 @@
 package Models
 
 type Home struct {
-	Money int16
-	Food  int16
-	Dirt  int16
+	Money uint16
+	Food  uint16
+	Dirt  uint16
 }

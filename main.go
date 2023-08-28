@@ -4,6 +4,7 @@ import (
 	"awesomeProject/Models"
 	"fmt"
 	"math/rand"
+	"strconv"
 )
 
 // Создать модель жизни небольшой семьи.
@@ -70,7 +71,7 @@ func main() {
 
 		addDirt(&home)
 
-		if home.Dirt >= 90 {
+		if home.Dirt > 90 {
 			decreaseHappiness(&husband, &wife)
 		}
 
@@ -79,7 +80,6 @@ func main() {
 			min := 20
 			max := 30
 			foodAmount := rand.Intn(max-min) + min
-			fmt.Println(foodAmount)
 			husband.Human.Eat(uint16(foodAmount))
 		} else if husbandAction == 1 {
 			husband.Play()
@@ -87,19 +87,29 @@ func main() {
 			husband.Work(&home)
 		}
 
-		wifeAction := rand.Intn(2)
-		if husbandAction == 0 {
+		wifeAction := rand.Intn(4)
+		if wifeAction == 0 {
 			min := 20
 			max := 30
 			foodAmount := rand.Intn(max-min) + min
-			fmt.Println(foodAmount)
-			husband.Human.Eat(uint16(foodAmount))
-		} else if husbandAction == 1 {
-			husband.Play()
+			wife.Human.Eat(uint16(foodAmount))
+		} else if wifeAction == 1 {
+			wife.BuyProducts(&home)
+		} else if wifeAction == 2 {
+			wife.BuyFurcoat(&home)
 		} else {
-			husband.Work(&home)
+			min := 80
+			max := 100
+			cleanPoints := uint16(rand.Intn(max-min) + min)
+			wife.CleanHome(&home, cleanPoints)
+		}
+		fmt.Println("Happiness of wife: ", wife.Human.Happiness)
+		fmt.Println("Money: ", home.Money)
+		if wife.Human.Happiness < 10 || wife.Human.Satiety < 0 || husband.Human.Happiness < 10 || husband.Human.Satiety < 0 {
+			panic("OOPS! SOMEONE IS DEAD " + strconv.Itoa((int(wife.Human.Happiness))) + " " + strconv.Itoa((int(wife.Human.Satiety))) + " " + strconv.Itoa((int(husband.Human.Happiness))) + " " + strconv.Itoa((int(husband.Human.Satiety))))
 		}
 	}
+	fmt.Println("SUCCESS EPTA")
 }
 
 func addDirt(home *Models.Home) {
